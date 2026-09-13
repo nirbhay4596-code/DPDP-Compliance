@@ -1,0 +1,92 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import { STAGES, CLUSTERS } from '../../content.config';
+
+export async function getStaticPaths() {
+  const rules = await getCollection('rules');
+  return rules.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+
+const cluster = CLUSTERS.find((c) => c.id === d.cluster);
+const pill =
+  d.live === '2025-11-13' ? 'pill-now' : d.live === '2026-11-13' ? 'pill-soon' : 'pill-later';
+
+const fmt = (dt: Date) =>
+  dt.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Base title={`Rule ${d.rule} — ${d.title}`} description={d.summary}>
+  <p><a href="/rules/">← All rules</a></p>
+
+  <h1>Rule {d.rule} — {d.title}</h1>
+  <p class="lede">{d.summary}</p>
+
+  <div class="factbox">
+    <dl>
+      <dt>Live</dt>
+      <dd>
+        <span class:list={['pill', pill]}>{STAGES[d.live].label}</span>
+        — {STAGES[d.live].note}
+      </dd>
+
+      <dt>Serves</dt>
+      <dd>Act {d.actSections.join(', ')}</dd>
+
+      <dt>Made under</dt>
+      <dd>{d.madeUnder.join(' and ')}</dd>
+
+      <dt>Penalty</dt>
+      <dd>{d.penalty ?? '—'}</dd>
+
+      {d.schedules.length > 0 && (
+        <>
+          <dt>Schedules</dt>
+          <dd>{d.schedules.join(', ')}</dd>
+        </>
+      )}
+
+      {cluster && (
+        <>
+          <dt>Cluster</dt>
+          <dd>
+            <a href={`/clusters/#cluster-${cluster.id}`}>{cluster.id}. {cluster.name}</a>
+            {cluster.universal && ' — universal'}
+          </dd>
+        </>
+      )}
+    </dl>
+  </div>
+
+  {!d.verifiedAgainstGazette && (
+    <p class="unverified">
+      Not yet checked line-by-line against the Gazette text. Do not rely on the pin-cites on this
+      page until this notice is removed.
+    </p>
+  )}
+
+  <Content />
+
+  {d.viresNote && (
+    <>
+      <h2>A note on this Rule's legal footing</h2>
+      <p>{d.viresNote}</p>
+    </>
+  )}
+
+  {d.draftingDefect && (
+    <>
+      <h2>A note on the notified text</h2>
+      <p>{d.draftingDefect}</p>
+    </>
+  )}
+
+  <p class="disclaimer">
+    Law as reviewed on {fmt(d.lastReviewed)}. Explanatory guide only — not legal advice.
+    Organisations and people in the examples are invented.
+  </p>
+</Base>

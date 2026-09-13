@@ -1,0 +1,49 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  wide?: boolean;
+}
+const { title, description = 'The DPDP Act 2023 and Rules 2025, rule by rule.', wide = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap wide">
+        <a href="/" class="brand">DPDP Rules 2025</a>
+        <nav>
+          <a href="/rules/">By rule</a>
+          <a href="/clusters/">By what you must do</a>
+          <a href="/traps/">Ten traps</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class:list={['wrap', wide && 'wide']}>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap wide">
+        <p>
+          An explanatory guide, not the law itself. Where this guide and the notified texts
+          differ, the notified texts govern. <strong>Not legal advice.</strong>
+        </p>
+        <p>
+          Primary texts: the Digital Personal Data Protection Act, 2023 (Act 22 of 2023) and the
+          Digital Personal Data Protection Rules, 2025 (G.S.R. 846(E), 13 November 2025).
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

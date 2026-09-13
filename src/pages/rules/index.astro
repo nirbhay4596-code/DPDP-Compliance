@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { STAGES } from '../../content.config';
+
+const rules = (await getCollection('rules')).sort((a, b) => a.data.rule - b.data.rule);
+
+const pillFor = (live: string) =>
+  live === '2025-11-13' ? 'pill-now' : live === '2026-11-13' ? 'pill-soon' : 'pill-later';
+---
+
+<Base title="All 23 Rules — DPDP Rules 2025" wide>
+  <h1>All twenty-three Rules</h1>
+  <p class="lede">
+    In numerical order, each with the date it commences, the Act section it serves, and what a
+    breach costs.
+  </p>
+
+  {rules.length < 23 && (
+    <p class="unverified">
+      {rules.length} of 23 Rules published. The rest are in progress.
+    </p>
+  )}
+
+  <div class="scroll-x">
+    <table>
+      <thead>
+        <tr>
+          <th>Rule</th><th>Subject</th><th>Act section</th><th>Live</th><th>Penalty</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rules.map((r) => (
+          <tr>
+            <td>{r.data.rule}</td>
+            <td>
+              <a href={`/rules/${r.id}/`}>{r.data.title}</a>
+              {r.data.schedules.length > 0 && (
+                <span class="sub"> + {r.data.schedules.join(', ')}</span>
+              )}
+            </td>
+            <td>{r.data.actSections.join(', ')}</td>
+            <td>
+              <span class:list={['pill', pillFor(r.data.live)]}>
+                {STAGES[r.data.live].label}
+              </span>
+            </td>
+            <td>{r.data.penalty ?? '—'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</Base>

@@ -1,0 +1,143 @@
+:root {
+  --bg: #fbfaf8;
+  --surface: #ffffff;
+  --text: #1a1a18;
+  --muted: #5f5d57;
+  --rule: #e2ded6;
+  --accent: #7a2e2e;
+  --accent-soft: #f4ebe9;
+  --live-now: #2d6a4f;
+  --live-soon: #9a6b1f;
+  --live-later: #7a2e2e;
+  --measure: 68ch;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #17171a;
+    --surface: #1f1f23;
+    --text: #ece9e3;
+    --muted: #a3a09a;
+    --rule: #33333a;
+    --accent: #e09a94;
+    --accent-soft: #2b2124;
+    --live-now: #7fc8a3;
+    --live-soon: #d9b169;
+    --live-later: #e09a94;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  -webkit-text-size-adjust: 100%;
+}
+
+.wrap { max-width: var(--measure); margin: 0 auto; padding: 0 1.25rem; }
+.wide { max-width: 90ch; }
+
+/* ---- header / footer ---- */
+.site-header {
+  border-bottom: 1px solid var(--rule);
+  padding: 1.1rem 0;
+  margin-bottom: 2.5rem;
+  background: var(--surface);
+}
+.site-header .wrap { display: flex; gap: 1.5rem; align-items: baseline; flex-wrap: wrap; }
+.site-header a { color: var(--text); text-decoration: none; }
+.site-header .brand { font-weight: 700; letter-spacing: -0.01em; }
+.site-header nav { display: flex; gap: 1.1rem; font-size: 0.92rem; }
+.site-header nav a { color: var(--muted); }
+.site-header nav a:hover { color: var(--accent); }
+
+.site-footer {
+  border-top: 1px solid var(--rule);
+  margin-top: 4rem;
+  padding: 1.75rem 0 3rem;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+/* ---- typography ---- */
+h1 { font-size: 2.1rem; line-height: 1.2; letter-spacing: -0.02em; margin: 0 0 0.4rem; }
+h2 { font-size: 1.4rem; margin: 2.5rem 0 0.6rem; letter-spacing: -0.01em; }
+h3 { font-size: 1.1rem; margin: 1.8rem 0 0.4rem; }
+.lede { font-size: 1.15rem; color: var(--muted); margin: 0 0 2rem; }
+a { color: var(--accent); text-underline-offset: 2px; }
+
+/* ---- the header box on every rule page ---- */
+.factbox {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  padding: 1rem 1.15rem;
+  margin: 1.5rem 0 2rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9rem;
+}
+.factbox dl { display: grid; grid-template-columns: auto 1fr; gap: 0.35rem 1rem; margin: 0; }
+.factbox dt { color: var(--muted); }
+.factbox dd { margin: 0; }
+
+/* ---- tables ---- */
+table { border-collapse: collapse; width: 100%; font-size: 0.94rem; margin: 1.25rem 0; }
+th, td { text-align: left; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.scroll-x { overflow-x: auto; }
+
+/* ---- stage pills ---- */
+.pill {
+  display: inline-block;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.74rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+.pill-now { color: var(--live-now); }
+.pill-soon { color: var(--live-soon); }
+.pill-later { color: var(--live-later); }
+
+/* ---- countdown ---- */
+.countdown {
+  background: var(--accent-soft);
+  border: 1px solid var(--rule);
+  padding: 1.5rem;
+  text-align: center;
+  margin: 2rem 0;
+}
+.countdown .days { font-size: 3rem; font-weight: 700; line-height: 1; color: var(--accent); }
+.countdown .cap { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.85rem; color: var(--muted); }
+
+/* ---- rule index ---- */
+.rule-list { list-style: none; padding: 0; margin: 1.5rem 0; }
+.rule-list li { border-bottom: 1px solid var(--rule); padding: 0.75rem 0; display: flex; gap: 1rem; align-items: baseline; }
+.rule-list .num { font-family: ui-sans-serif, system-ui, sans-serif; color: var(--muted); min-width: 3.5rem; font-size: 0.85rem; }
+.rule-list .body { flex: 1; }
+.rule-list a { text-decoration: none; font-weight: 600; }
+.rule-list a:hover { text-decoration: underline; }
+.rule-list .sub { display: block; font-size: 0.88rem; color: var(--muted); }
+
+.unverified {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.78rem;
+  color: var(--live-soon);
+  border: 1px dashed currentColor;
+  padding: 0.4rem 0.6rem;
+  margin: 1rem 0;
+}
+
+.disclaimer {
+  font-size: 0.85rem;
+  color: var(--muted);
+  border-top: 1px solid var(--rule);
+  margin-top: 3rem;
+  padding-top: 1rem;
+}
