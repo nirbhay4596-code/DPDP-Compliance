@@ -18,3 +18,7 @@ pnpm-debug.log*
 # macOS / Windows cruft
 .DS_Store
 Thumbs.db
+
+# Source notes — your own drafting. Kept local, not published to the public repo,
+# so you keep the option of publishing them yourself later.
+source-pdfs/
