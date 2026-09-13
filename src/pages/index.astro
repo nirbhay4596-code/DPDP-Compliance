@@ -4,7 +4,8 @@ import { getCollection } from 'astro:content';
 
 const rules = (await getCollection('rules')).sort((a, b) => a.data.rule - b.data.rule);
 
-// Countdown is computed at build time. Rebuild (or redeploy) refreshes it.
+// Rendered at build time so the page is correct without JavaScript, then corrected
+// in the browser on load (see the script at the foot of this file) so it never goes stale.
 const TARGET = new Date('2027-05-13T00:00:00+05:30');
 const now = new Date();
 const daysLeft = Math.ceil((TARGET.getTime() - now.getTime()) / 86_400_000);
@@ -45,9 +46,20 @@ const stages = [
   </p>
 
   <div class="countdown">
-    <div class="days">{daysLeft}</div>
+    <div class="days" id="days-left">{daysLeft}</div>
     <div class="cap">days until 13 May 2027, when the obligations on business commence</div>
   </div>
+
+  <script is:inline>
+    // Recompute in the viewer's browser so the number is right on any day,
+    // however long ago the site was last built.
+    (function () {
+      var target = new Date('2027-05-13T00:00:00+05:30').getTime();
+      var days = Math.ceil((target - Date.now()) / 86400000);
+      var el = document.getElementById('days-left');
+      if (el && days > 0) el.textContent = String(days);
+    })();
+  </script>
 
   <h2>The law commences in three stages</h2>
   <p>
